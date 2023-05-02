@@ -72,7 +72,10 @@ interface ChartData {
   color: string;
 }
 
-export const conversesChartData = (arr: any, color: string = "#000000"): ChartData[] => {
+export const conversesChartData = (
+  arr: any,
+  color: string = "#000000"
+): ChartData[] => {
   return arr.map((el: any) => ({
     name: el?.skillName || el?.name,
     value: el?.numberOfUsers || el?.score,
@@ -134,7 +137,6 @@ export const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-
 export const convertBranchPercentages = (arr: any) => {
   const updatedArr = arr.map((skill: any) => {
     const { fresher, junior, middle, preSenior, senior } = skill;
@@ -144,19 +146,19 @@ export const convertBranchPercentages = (arr: any) => {
       return {
         ...skill,
         fresher: Number.isInteger((fresher / total) * 100)
-          ? ((fresher / total) * 100)
+          ? (fresher / total) * 100
           : ((fresher / total) * 100).toFixed(2),
         junior: Number.isInteger((junior / total) * 100)
-          ? ((junior / total) * 100)
+          ? (junior / total) * 100
           : ((junior / total) * 100).toFixed(2),
         middle: Number.isInteger((middle / total) * 100)
-          ? ((middle / total) * 100)
+          ? (middle / total) * 100
           : ((middle / total) * 100).toFixed(2),
         preSenior: Number.isInteger((preSenior / total) * 100)
-          ? ((preSenior / total) * 100)
+          ? (preSenior / total) * 100
           : ((preSenior / total) * 100).toFixed(2),
         senior: Number.isInteger((senior / total) * 100)
-          ? ((senior / total) * 100)
+          ? (senior / total) * 100
           : ((senior / total) * 100).toFixed(2),
       };
     }
@@ -164,11 +166,47 @@ export const convertBranchPercentages = (arr: any) => {
   });
 
   return updatedArr;
-}
+};
 export const calculateTotalNumberOfUsers = (data: any) => {
-  const totalNumberOfUsers = data.reduce((accumulator: any, currentValue: any) => {
-    return accumulator + currentValue.numberOfUsers;
-  }, 0);
+  const totalNumberOfUsers = data.reduce(
+    (accumulator: any, currentValue: any) => {
+      return accumulator + currentValue.numberOfUsers;
+    },
+    0
+  );
   return totalNumberOfUsers;
-}
+};
 
+export const imageUpload = async (images: any) => {
+  let imgArr: any = [];
+  for (const item of images) {
+    console.log({ item });
+    const formData = new FormData();
+
+    if (item.camera) {
+      formData.append("file", item.camera);
+    } else {
+      formData.append("file", item);
+    }
+
+    formData.append("upload_preset", "pcfn6h3b");
+    formData.append("cloud_name", "dueyjeqd5");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dueyjeqd5/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+      imgArr.push({ public_id: data.public_id, url: data.secure_url } as never);
+    } catch (error) {
+      console.log("****************************");
+      console.log(error);
+    }
+  }
+  return imgArr;
+};

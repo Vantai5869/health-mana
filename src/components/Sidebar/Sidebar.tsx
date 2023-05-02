@@ -45,8 +45,14 @@ const menuItem: MenuItem[] = [
     id: 2,
     children: [
       {
-        label: "Tạo chi nhánh",
+        label: "Chi nhánh",
         to: "/branch",
+        topDevider: false,
+        // isAdmin: true,
+      },
+      {
+        label: "Nhóm dịch vụ",
+        to: "/service-group",
         topDevider: false,
         // isAdmin: true,
       },

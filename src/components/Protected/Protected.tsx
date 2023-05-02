@@ -8,6 +8,7 @@ import {
   Routes
 } from "react-router-dom";
 import styles from "./Protected.module.scss";
+import ServiceGroup from "../../pages/ServiceGroup/ServiceGroup";
 
 const Header = lazy(() => import("../Header"));
 const Sidebar = lazy(() => import("../Sidebar"));
@@ -53,6 +54,11 @@ const Protected = (props: any) => {
     {
       path: "branch",
       component: <Branch />,
+      isAdmin: false,
+    },
+    {
+      path: "service-group",
+      component: <ServiceGroup />,
       isAdmin: false,
     },
   ];

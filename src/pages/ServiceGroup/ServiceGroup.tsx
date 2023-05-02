@@ -4,23 +4,24 @@ import PageSizeSelector from "../../components/PageSizeSelector";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import {
-  addBranch,
-  deleteBranch,
-  editBranch,
-  getBranchs,
-  resetStatusDeleteBranch,
-  selectLoadingBranch,
-  selectBranchList,
-  selectStatusDeleteBranch,
-  selectTotalBranch,
-} from "../../redux/slice/Branch/BranchSlice";
+  addServiceGroup,
+  deleteServiceGroup,
+  editServiceGroup,
+  getServiceGroups,
+  resetStatusDeleteServiceGroup,
+  selectLoadingServiceGroup,
+  selectServiceGroupList,
+  selectStatusDeleteServiceGroup,
+  selectTotalServiceGroup,
+} from "../../redux/slice/ServiceGroup/ServiceGroupSlice";
 import {
-  EditBranchReq,
-  GetBranchReq,
-  BranchRes,
-} from "../../redux/types/Branch/branch";
-import ModalBranch from "./ModalBranch/ModalBranch";
-import styles from "./branch.module.scss";
+  EditServiceGroupReq,
+  GetServiceGroupReq,
+  ServiceGroupRes,
+} from "../../redux/types/ServiceGroup/serviceGroup";
+import ModalServiceGroup from "./ModalServiceGroup/ModalServiceGroup";
+import styles from "./ServiceGroup.module.scss";
+import { imageUpload } from "../../common/utils";
 
 const MainLayout = lazy(() => import("../../components/MainLayout"));
 const Table = lazy(() => import("../../components/Table"));
@@ -35,14 +36,16 @@ interface SortType {
   type: string;
 }
 
-export default function Branch() {
+export default function ServiceGroup() {
   const cx = classNames.bind(styles);
   const List = [
     { title: "#", sortBy: "" },
-    { title: "Tên chi nhánh", sortBy: "name" },
-    { title: "Địa chỉ", sortBy: "address" },
-    { title: "Số điện thoại", sortBy: "phone" },
-    { title: "Action", sortBy: "" },
+    { title: "Tên nhóm dịch vụ" },
+    { title: "Ảnh dịch vụ" },
+    { title: "Mã dịch vụ" },
+    { title: "SKU" },
+    { title: "Mô tả" },
+    { title: "Action" },
   ];
   const dispatch = useAppDispatch();
 
@@ -51,40 +54,43 @@ export default function Branch() {
     limit: 10,
     sortBy: "name",
     sortOrder: "ASC",
-  } as GetBranchReq;
+  } as GetServiceGroupReq;
 
-  const newBranch = useRef(false);
+  const newServiceGroup = useRef(false);
   const [show, setShow] = useState(false);
   const [modelConfirm, setShowModelConfirm] = useState(false);
-  // const [newBranch, setNewBranch] = useState(false);
+  // const [newServiceGroup, setNewServiceGroup] = useState(false);
   const pageSizeList = [10, 25, 50, 100];
   const [limit, setLimit] = useState(pageSizeList[0]);
-  const [selected, setSelected] = useState<BranchRes>({
+  const [selected, setSelected] = useState<ServiceGroupRes>({
     id: "",
     name: "",
-    address: "",
+    code: "",
+    sku: "",
+    image: "",
+    description: "",
   });
   const [sort, setSort] = useState<SortType>({ sortBy: "", type: "" });
-  const [path, setPath] = useState<GetBranchReq>(initial);
+  const [path, setPath] = useState<GetServiceGroupReq>(initial);
   const [page, setPage] = useState<number>(1);
 
-  const selectBranchs = useAppSelector(selectBranchList);
-  const loading = useAppSelector(selectLoadingBranch);
-  const statusDelete = useAppSelector(selectStatusDeleteBranch);
-  const totalBranch = useAppSelector(selectTotalBranch);
-  const [branchs, setBranchs] = useState(selectBranchs);
-  const handleEditBranch = (e: BranchRes) => {
+  const selectServiceGroups = useAppSelector(selectServiceGroupList);
+  const loading = useAppSelector(selectLoadingServiceGroup);
+  const statusDelete = useAppSelector(selectStatusDeleteServiceGroup);
+  const totalServiceGroup = useAppSelector(selectTotalServiceGroup);
+  const [serviceGroups, setServiceGroups] = useState(selectServiceGroups);
+  const handleEditServiceGroup = (e: ServiceGroupRes) => {
     setShow(true);
-    newBranch.current = false;
+    newServiceGroup.current = false;
     setSelected(e);
   };
 
-  const handleAddBranch = () => {
+  const handleAddServiceGroup = () => {
     setShow(true);
-    newBranch.current = true;
+    newServiceGroup.current = true;
   };
 
-  const handleDelete = (e: BranchRes) => {
+  const handleDelete = (e: ServiceGroupRes) => {
     setShowModelConfirm(true);
     setSelected(e);
   };
@@ -93,7 +99,7 @@ export default function Branch() {
     const req = {
       id: selected.id,
     };
-    dispatch(deleteBranch(req));
+    dispatch(deleteServiceGroup(req));
     setShowModelConfirm(false);
   };
 
@@ -137,20 +143,20 @@ export default function Branch() {
 
   useEffect(() => {
     if (path || statusDelete === true) {
-      dispatch(getBranchs(path));
+      dispatch(getServiceGroups(path));
     }
 
     return () => {
-      dispatch(resetStatusDeleteBranch(0));
+      dispatch(resetStatusDeleteServiceGroup(0));
     };
   }, [path.page, path.limit, path.sortBy, path.sortOrder, statusDelete]);
 
   return (
     <Suspense fallback={<></>}>
       <MainLayout
-        title="Branch"
-        titleButton="Thêm Chi Nhánh"
-        handleClickAdd={handleAddBranch}
+        title="ServiceGroup"
+        titleButton="Thêm Nhóm Dịch Vụ"
+        handleClickAdd={handleAddServiceGroup}
       >
         <div className={cx("skill-page")}>
           <div className={cx("total-page")}>
@@ -170,43 +176,45 @@ export default function Branch() {
                   <thead>
                     <tr>
                       {List.map((item, index) => {
-                        return (
-                          <th
-                            key={index}
-                           
-                            onClick={() => handleSort(item)}
-                          >
-                            {item.title}
-                          </th>
-                        );
+                        return <th key={index}>{item.title}</th>;
                       })}
                     </tr>
                   </thead>
                   <tbody>
-                    {selectBranchs?.map((e: BranchRes, idx: number) => {
-                      return (
-                        <tr key={e.id}>
-                          <td>
-                            <p className={cx("table-stt")}>
-                              <span>{idx + 1}</span>
-                            </p>
-                          </td>
-                          <td>{e.name}</td>
-                          <td>{e.address}</td>
-                          <td>{e.phone}</td>
-                          <td className={cx("text-right", "dropdown")}>
-                            <Suspense fallback={<></>}>
-                              <DropDownEdit
-                                deleteCondition={true}
-                                customClass={cx("dropdown-skill")}
-                                handleEdit={() => handleEditBranch(e)}
-                                handleDelete={() => handleDelete(e)}
+                    {selectServiceGroups?.map(
+                      (e: ServiceGroupRes, idx: number) => {
+                        return (
+                          <tr key={e.id}>
+                            <td>
+                              <p className={cx("table-stt")}>
+                                <span>{idx + 1}</span>
+                              </p>
+                            </td>
+                            <td>{e.name}</td>
+                            <td>
+                              <img
+                                src={e.image}
+                                alt="react logo"
+                                className={cx("service-image")}
                               />
-                            </Suspense>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                            </td>
+                            <td>{e.code}</td>
+                            <td>{e.sku}</td>
+                            <td>{e.description}</td>
+                            <td className={cx("text-right", "dropdown")}>
+                              <Suspense fallback={<></>}>
+                                <DropDownEdit
+                                  deleteCondition={true}
+                                  customClass={cx("dropdown-skill")}
+                                  handleEdit={() => handleEditServiceGroup(e)}
+                                  handleDelete={() => handleDelete(e)}
+                                />
+                              </Suspense>
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )}
                   </tbody>
                 </Table>
               </Suspense>
@@ -214,14 +222,15 @@ export default function Branch() {
           )}
           <div className={cx("pagination")}>
             <span className={cx("showing")}>
-              Showing {page} to {limit > totalBranch ? totalBranch : limit} of{" "}
-              {totalBranch} entries
+              Showing {page} to{" "}
+              {limit > totalServiceGroup ? totalServiceGroup : limit} of{" "}
+              {totalServiceGroup} entries
             </span>
             <Suspense>
               <Pagination
                 currentPage={page}
                 pageSize={limit}
-                totalData={totalBranch}
+                totalData={totalServiceGroup}
                 onChangePage={handleChangePage}
               />
             </Suspense>
@@ -230,13 +239,15 @@ export default function Branch() {
             <Modal
               isModal={show}
               title={
-                newBranch.current ? "Thêm chi nhánh" : "Chỉnh sửa chi nhánh"
+                newServiceGroup.current
+                  ? "Thêm chi nhánh"
+                  : "Chỉnh sửa chi nhánh"
               }
               setOpenModals={setShow}
             >
-              <ModalBranch
+              <ModalServiceGroup
                 onCloseModal={() => setShow(false)}
-                defaultValue={newBranch.current ? null : selected}
+                defaultValue={newServiceGroup.current ? null : selected}
               />
             </Modal>
           </Suspense>

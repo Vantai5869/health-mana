@@ -33,10 +33,10 @@
       width: 5%;
     }
     &:nth-child(2) {
-      width: 40%;
+      width: 15%;
     }
     &:nth-child(3) {
-      width: 30%;
+      width: 15%;
     }
     &:last-child {
       width: 10%;
@@ -161,4 +161,9 @@
 }
 .total-page {
   margin-bottom: 15px;
+}
+.service-image{
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
 }

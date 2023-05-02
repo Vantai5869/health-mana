@@ -69,7 +69,7 @@ export const deleteBranch = createAsyncThunk(
   }
 );
 
-export const skillSlice = createSlice({
+export const branchSlice = createSlice({
   name: "BranchReducer",
   initialState,
   reducers: {
@@ -154,7 +154,7 @@ export const skillSlice = createSlice({
 });
 
 export const { resetLoadingAndErrors, resetStatusDeleteBranch } =
-  skillSlice.actions;
+  branchSlice.actions;
 
 export const selectBranchList = (state: RootState) =>
   state.branchReducer.listBranchs.items;
@@ -165,4 +165,4 @@ export const selectTotalBranch = (state: RootState) =>
 export const selectLoadingBranch = (state: RootState) =>
   state.branchReducer.loading;
 
-export default skillSlice.reducer;
+export default branchSlice.reducer;
