@@ -6,6 +6,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import styles from "./Protected.module.scss";
 import ServiceGroup from "../../pages/ServiceGroup/ServiceGroup";
 import Service from "../../pages/Service/Service";
+import Dashboard from "../../pages/Dashboard/Dashboard";
+import Booking from "../../pages/Booking/Booking";
 const Header = lazy(() => import("../Header"));
 const Sidebar = lazy(() => import("../Sidebar"));
 const Branch = lazy(() => import("../../pages/Branch"));
@@ -49,6 +51,16 @@ const Protected = (props: any) => {
 
   const menu = [
     {
+      path: "/",
+      component: <Dashboard />,
+      isAdmin: false,
+    },
+    {
+      path: "dashboard",
+      component: <Dashboard />,
+      isAdmin: false,
+    },
+    {
       path: "branch",
       component: <Branch />,
       isAdmin: false,
@@ -61,6 +73,11 @@ const Protected = (props: any) => {
     {
       path: "service",
       component: <Service />,
+      isAdmin: false,
+    },
+    {
+      path: "booking",
+      component: <Booking />,
       isAdmin: false,
     },
   ];

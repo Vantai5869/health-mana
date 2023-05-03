@@ -78,8 +78,8 @@ const menuItem: MenuItem[] = [
     id: 3,
     children: [
       {
-        label: "Employee Profile",
-        to: "/employee-profile",
+        label: "Profile",
+        to: "/profile",
         topDevider: false,
       },
     ],

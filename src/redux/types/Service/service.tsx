@@ -9,12 +9,20 @@ export interface ServiceState {
 
 export interface ServiceRes {
   id: string;
-  merchantId?: number;
+  merchantId?: string;
+  groupId?: number;
   sku?: string;
   code?: string;
   name?: string;
   description?: string;
   image?: string;
+  price?: number;
+  initialPrice?: number;
+  durationHour?: number;
+  durationMinute?: number;
+  type?: EServiceType;
+  showType?: EServiceShowType;
+  canPrintableInvoice?: boolean;
 }
 
 export interface ServiceReq {

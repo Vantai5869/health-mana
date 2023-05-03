@@ -33,10 +33,11 @@ export default function Service() {
   const cx = classNames.bind(styles);
   const List = [
     { title: "#", sortBy: "" },
-    { title: "Tên nhóm dịch vụ" },
+    { title: "Tên dịch vụ" },
     { title: "Ảnh dịch vụ" },
     { title: "Mã dịch vụ" },
     { title: "SKU" },
+    { title: "Giá" },
     { title: "Mô tả" },
     { title: "Action" },
   ];
@@ -191,6 +192,7 @@ export default function Service() {
                           </td>
                           <td>{e.code}</td>
                           <td>{e.sku}</td>
+                          <td>{e.price}</td>
                           <td>{e.description}</td>
                           <td className={cx("text-right", "dropdown")}>
                             <Suspense fallback={<></>}>

@@ -128,9 +128,6 @@ export default function ServiceGroup() {
   }, [sort.sortBy]);
 
   useEffect(() => {
-    console.log('====================================');
-    console.log({path});
-    console.log('====================================');
     if (path || statusDelete === true) {
       dispatch(getServiceGroups(path));
     }
