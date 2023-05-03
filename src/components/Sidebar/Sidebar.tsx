@@ -36,7 +36,7 @@ const menuItem: MenuItem[] = [
     label: "Dashboard",
     to: "/dashboard",
     id: 1,
-    isAdmin: true,
+    // isAdmin: true,
   },
   {
     icon: <EmployeeIcon />,
@@ -56,7 +56,20 @@ const menuItem: MenuItem[] = [
         topDevider: false,
         // isAdmin: true,
       },
+      {
+        label: "Dịch vụ",
+        to: "/service",
+        topDevider: false,
+        // isAdmin: true,
+      },
     ],
+  },
+  {
+    icon: <DashboardIcon className={""} />,
+    label: "Booking",
+    to: "/booking",
+    id: 1,
+    // isAdmin: true,
   },
   {
     icon: <EmployeeIcon />,
@@ -85,19 +98,7 @@ const menuItem: MenuItem[] = [
       },
     ],
   },
-  {
-    icon: <EmployeeIcon />,
-    label: "Project Team ",
-    to: "/",
-    id: 5,
-    children: [
-      {
-        label: "Project Team",
-        to: "/project-team",
-        topDevider: false,
-      },
-    ],
-  },
+
   {
     icon: (
       <FontAwesomeIcon

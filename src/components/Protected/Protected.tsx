@@ -2,17 +2,14 @@
 import classNames from "classnames/bind";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { withCookies } from "react-cookie";
-import {
-  Navigate,
-  Route,
-  Routes
-} from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import styles from "./Protected.module.scss";
 import ServiceGroup from "../../pages/ServiceGroup/ServiceGroup";
-
+import Service from "../../pages/Service/Service";
 const Header = lazy(() => import("../Header"));
 const Sidebar = lazy(() => import("../Sidebar"));
 const Branch = lazy(() => import("../../pages/Branch"));
+
 function getWindowSize() {
   const { innerWidth, innerHeight } = window;
   return { innerWidth, innerHeight };
@@ -59,6 +56,11 @@ const Protected = (props: any) => {
     {
       path: "service-group",
       component: <ServiceGroup />,
+      isAdmin: false,
+    },
+    {
+      path: "service",
+      component: <Service />,
       isAdmin: false,
     },
   ];

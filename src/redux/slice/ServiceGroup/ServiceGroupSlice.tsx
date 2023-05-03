@@ -120,7 +120,7 @@ export const serviceGroupSlice = createSlice({
     });
     builder.addCase(editServiceGroup.fulfilled, (state, action) => {
       state.loading = false;
-      const serviceGroup = action?.payload.result.serviceGroup;
+      const serviceGroup = action?.payload.result.group;
       let newArr = state.listServiceGroups.items.map((item: ServiceGroupRes) =>
         item.id === serviceGroup.id ? { ...item, ...serviceGroup } : item
       );

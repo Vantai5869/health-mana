@@ -14,13 +14,20 @@ import url from "./url";
 
 const ServiceGroupApi = {
   getServiceGroups: (params: GetServiceGroupReq) => {
-    const uri = url.serviceGroupList;
-    return httpService.GET<GetServiceGroupReq, ServiceGroupRes[]>({ uri, params });
+    const merchant = JSON.parse(localStorage.getItem("merchant") as any);
+    const uri = url.serviceGroupList(merchant.id);
+    return httpService.GET<GetServiceGroupReq, ServiceGroupRes[]>({
+      uri,
+      params,
+    });
   },
 
   addServiceGroup: (request: AddServiceGroupReq) => {
     const uri = url.serviceGroupPatch;
-    return httpService.POST<AddServiceGroupReq, AddServiceGroupRes>({ uri, request });
+    return httpService.POST<AddServiceGroupReq, AddServiceGroupRes>({
+      uri,
+      request,
+    });
   },
 
   editServiceGroup: (request: EditServiceGroupReq, id: string) => {

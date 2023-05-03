@@ -1,6 +1,6 @@
 const url = {
   branchPatch: "/branches",
-  branchList: "/merchants/1/branches",
+  branchList: (id: string) => `/merchants/${id}/branches`,
 };
 
 export default url;

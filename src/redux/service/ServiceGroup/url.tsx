@@ -1,6 +1,6 @@
 const url = {
   serviceGroupPatch: "/groups",
-  serviceGroupList: "/merchants/1/groups",
+  serviceGroupList: (id: string) => `/merchants/${id}/groups`,
 };
 
 export default url;

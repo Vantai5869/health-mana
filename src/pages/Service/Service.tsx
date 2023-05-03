@@ -4,23 +4,17 @@ import PageSizeSelector from "../../components/PageSizeSelector";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import {
-  addBranch,
-  deleteBranch,
-  editBranch,
-  getBranchs,
-  resetStatusDeleteBranch,
-  selectLoadingBranch,
-  selectBranchList,
-  selectStatusDeleteBranch,
-  selectTotalBranch,
-} from "../../redux/slice/Branch/BranchSlice";
-import {
-  EditBranchReq,
-  GetBranchReq,
-  BranchRes,
-} from "../../redux/types/Branch/branch";
-import ModalBranch from "./ModalBranch/ModalBranch";
-import styles from "./branch.module.scss";
+  deleteService,
+  getServices,
+  resetStatusDeleteService,
+  selectLoadingService,
+  selectServiceList,
+  selectStatusDeleteService,
+  selectTotalService,
+} from "../../redux/slice/Service/ServiceSlice";
+import { GetServiceReq, ServiceRes } from "../../redux/types/Service/service";
+import ModalService from "./ModalService/ModalService";
+import styles from "./Service.module.scss";
 
 const MainLayout = lazy(() => import("../../components/MainLayout"));
 const Table = lazy(() => import("../../components/Table"));
@@ -35,14 +29,16 @@ interface SortType {
   type: string;
 }
 
-export default function Branch() {
+export default function Service() {
   const cx = classNames.bind(styles);
   const List = [
     { title: "#", sortBy: "" },
-    { title: "Tên chi nhánh", sortBy: "name" },
-    { title: "Địa chỉ", sortBy: "address" },
-    { title: "Số điện thoại", sortBy: "phone" },
-    { title: "Action", sortBy: "" },
+    { title: "Tên nhóm dịch vụ" },
+    { title: "Ảnh dịch vụ" },
+    { title: "Mã dịch vụ" },
+    { title: "SKU" },
+    { title: "Mô tả" },
+    { title: "Action" },
   ];
   const dispatch = useAppDispatch();
 
@@ -51,39 +47,42 @@ export default function Branch() {
     limit: 10,
     sortBy: "name",
     sortOrder: "ASC",
-  } as GetBranchReq;
+  } as GetServiceReq;
 
-  const newBranch = useRef(false);
+  const newService = useRef(false);
   const [show, setShow] = useState(false);
   const [modelConfirm, setShowModelConfirm] = useState(false);
-  // const [newBranch, setNewBranch] = useState(false);
+  // const [newService, setNewService] = useState(false);
   const pageSizeList = [10, 25, 50, 100];
   const [limit, setLimit] = useState(pageSizeList[0]);
-  const [selected, setSelected] = useState<BranchRes>({
+  const [selected, setSelected] = useState<ServiceRes>({
     id: "",
     name: "",
-    address: "",
+    code: "",
+    sku: "",
+    image: "",
+    description: "",
   });
   const [sort, setSort] = useState<SortType>({ sortBy: "", type: "" });
-  const [path, setPath] = useState<GetBranchReq>(initial);
+  const [path, setPath] = useState<GetServiceReq>(initial);
   const [page, setPage] = useState<number>(1);
 
-  const selectBranchs = useAppSelector(selectBranchList);
-  const loading = useAppSelector(selectLoadingBranch);
-  const statusDelete = useAppSelector(selectStatusDeleteBranch);
-  const totalBranch = useAppSelector(selectTotalBranch);
-  const handleEditBranch = (e: BranchRes) => {
+  const selectServices = useAppSelector(selectServiceList);
+  const loading = useAppSelector(selectLoadingService);
+  const statusDelete = useAppSelector(selectStatusDeleteService);
+  const totalService = useAppSelector(selectTotalService);
+  const handleEditService = (e: ServiceRes) => {
     setShow(true);
-    newBranch.current = false;
+    newService.current = false;
     setSelected(e);
   };
 
-  const handleAddBranch = () => {
+  const handleAddService = () => {
     setShow(true);
-    newBranch.current = true;
+    newService.current = true;
   };
 
-  const handleDelete = (e: BranchRes) => {
+  const handleDelete = (e: ServiceRes) => {
     setShowModelConfirm(true);
     setSelected(e);
   };
@@ -92,7 +91,7 @@ export default function Branch() {
     const req = {
       id: selected.id,
     };
-    dispatch(deleteBranch(req));
+    dispatch(deleteService(req));
     setShowModelConfirm(false);
   };
 
@@ -136,20 +135,20 @@ export default function Branch() {
 
   useEffect(() => {
     if (path || statusDelete === true) {
-      dispatch(getBranchs(path));
+      dispatch(getServices(path));
     }
 
     return () => {
-      dispatch(resetStatusDeleteBranch(0));
+      dispatch(resetStatusDeleteService(0));
     };
   }, [path.page, path.limit, path.sortBy, path.sortOrder, statusDelete]);
 
   return (
     <Suspense fallback={<></>}>
       <MainLayout
-        title="Branch"
-        titleButton="Thêm Chi Nhánh"
-        handleClickAdd={handleAddBranch}
+        title="Service"
+        titleButton="Thêm Dịch Vụ"
+        handleClickAdd={handleAddService}
       >
         <div className={cx("skill-page")}>
           <div className={cx("total-page")}>
@@ -169,20 +168,12 @@ export default function Branch() {
                   <thead>
                     <tr>
                       {List.map((item, index) => {
-                        return (
-                          <th
-                            key={index}
-                           
-                            onClick={() => handleSort(item)}
-                          >
-                            {item.title}
-                          </th>
-                        );
+                        return <th key={index}>{item.title}</th>;
                       })}
                     </tr>
                   </thead>
                   <tbody>
-                    {selectBranchs?.map((e: BranchRes, idx: number) => {
+                    {selectServices?.map((e: ServiceRes, idx: number) => {
                       return (
                         <tr key={e.id}>
                           <td>
@@ -191,14 +182,22 @@ export default function Branch() {
                             </p>
                           </td>
                           <td>{e.name}</td>
-                          <td>{e.address}</td>
-                          <td>{e.phone}</td>
+                          <td>
+                            <img
+                              src={e.image}
+                              alt="react logo"
+                              className={cx("service-image")}
+                            />
+                          </td>
+                          <td>{e.code}</td>
+                          <td>{e.sku}</td>
+                          <td>{e.description}</td>
                           <td className={cx("text-right", "dropdown")}>
                             <Suspense fallback={<></>}>
                               <DropDownEdit
                                 deleteCondition={true}
                                 customClass={cx("dropdown-skill")}
-                                handleEdit={() => handleEditBranch(e)}
+                                handleEdit={() => handleEditService(e)}
                                 handleDelete={() => handleDelete(e)}
                               />
                             </Suspense>
@@ -213,14 +212,14 @@ export default function Branch() {
           )}
           <div className={cx("pagination")}>
             <span className={cx("showing")}>
-              Showing {page} to {limit > totalBranch ? totalBranch : limit} of{" "}
-              {totalBranch} entries
+              Showing {page} to {limit > totalService ? totalService : limit} of{" "}
+              {totalService} entries
             </span>
             <Suspense>
               <Pagination
                 currentPage={page}
                 pageSize={limit}
-                totalData={totalBranch}
+                totalData={totalService}
                 onChangePage={handleChangePage}
               />
             </Suspense>
@@ -229,13 +228,13 @@ export default function Branch() {
             <Modal
               isModal={show}
               title={
-                newBranch.current ? "Thêm chi nhánh" : "Chỉnh sửa chi nhánh"
+                newService.current ? "Thêm chi nhánh" : "Chỉnh sửa chi nhánh"
               }
               setOpenModals={setShow}
             >
-              <ModalBranch
+              <ModalService
                 onCloseModal={() => setShow(false)}
-                defaultValue={newBranch.current ? null : selected}
+                defaultValue={newService.current ? null : selected}
               />
             </Modal>
           </Suspense>

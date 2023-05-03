@@ -78,7 +78,6 @@ export default function ServiceGroup() {
   const loading = useAppSelector(selectLoadingServiceGroup);
   const statusDelete = useAppSelector(selectStatusDeleteServiceGroup);
   const totalServiceGroup = useAppSelector(selectTotalServiceGroup);
-  const [serviceGroups, setServiceGroups] = useState(selectServiceGroups);
   const handleEditServiceGroup = (e: ServiceGroupRes) => {
     setShow(true);
     newServiceGroup.current = false;
@@ -107,19 +106,6 @@ export default function ServiceGroup() {
     setPage(e);
   };
 
-  const handleSort = (item: any) => {
-    if (sort.sortBy === item.sortBy) {
-      if (sort.type === "ASC") {
-        setSort({ sortBy: item.sortBy, type: "DESC" });
-      } else {
-        setSort({ sortBy: item.sortBy, type: "ASC" });
-      }
-    } else {
-      setSort({ sortBy: item.sortBy, type: "DESC" });
-      setPath({ ...path, sortOrder: "DESC" });
-    }
-  };
-
   useEffect(() => {
     setLimit(limit);
     setPath({ ...path, limit: limit });
@@ -142,6 +128,9 @@ export default function ServiceGroup() {
   }, [sort.sortBy]);
 
   useEffect(() => {
+    console.log('====================================');
+    console.log({path});
+    console.log('====================================');
     if (path || statusDelete === true) {
       dispatch(getServiceGroups(path));
     }

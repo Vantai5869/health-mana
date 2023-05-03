@@ -14,7 +14,8 @@ import url from "./url";
 
 const BranchApi = {
   getBranchs: (params: GetBranchReq) => {
-    const uri = url.branchList;
+    const merchant = JSON.parse(localStorage.getItem("merchant") as any);
+    const uri = url.branchList(merchant.id);
     return httpService.GET<GetBranchReq, BranchRes[]>({ uri, params });
   },
 
