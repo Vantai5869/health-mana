@@ -9,7 +9,7 @@ import qs from "qs";
 import { store } from "../store";
 import { logout } from "../slice/Authen/login";
 
-const BASE_URL = "https://health-care-1kc3.onrender.com/api/";
+const BASE_URL = "http://103.82.20.139:3000/api/";
 const TIME_OUT = 5000;
 
 type ApiConfig<T = any> = {
