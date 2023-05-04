@@ -230,7 +230,7 @@ export default function Service() {
             <Modal
               isModal={show}
               title={
-                newService.current ? "Thêm chi nhánh" : "Chỉnh sửa chi nhánh"
+                newService.current ? "Thêm dịch vụ" : "Chỉnh sửa dịch vụ"
               }
               setOpenModals={setShow}
             >
@@ -242,8 +242,8 @@ export default function Service() {
           </Suspense>
           <Suspense>
             <ModalConfirm
-              title="Xóa chi nhánh"
-              subTitle={`Bạn chắc chắn muốn xóa chi nhánh:  ${selected.name} ? `}
+              title="Xóa dịch vụ"
+              subTitle={`Bạn chắc chắn muốn xóa dịch vụ:  ${selected.name} ? `}
               isModal={modelConfirm}
               confirmText="Delete"
               cancelText="Cancel"

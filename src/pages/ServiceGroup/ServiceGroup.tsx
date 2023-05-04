@@ -226,8 +226,8 @@ export default function ServiceGroup() {
               isModal={show}
               title={
                 newServiceGroup.current
-                  ? "Thêm chi nhánh"
-                  : "Chỉnh sửa chi nhánh"
+                  ? "Thêm nhóm dịch vụ"
+                  : "Chỉnh sửa nhóm dịch vụ"
               }
               setOpenModals={setShow}
             >
@@ -239,8 +239,8 @@ export default function ServiceGroup() {
           </Suspense>
           <Suspense>
             <ModalConfirm
-              title="Xóa chi nhánh"
-              subTitle={`Bạn chắc chắn muốn xóa chi nhánh:  ${selected.name} ? `}
+              title="Xóa chi nhóm dịch vụ"
+              subTitle={`Bạn chắc chắn muốn xóa nhóm dịch vụ:  ${selected.name} ? `}
               isModal={modelConfirm}
               confirmText="Delete"
               cancelText="Cancel"
