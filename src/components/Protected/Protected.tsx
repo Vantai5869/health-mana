@@ -22,8 +22,6 @@ const Protected = (props: any) => {
   const [openOnClick, setOpenOnClick] = useState(true);
   const [menuActive, setMenuActive] = useState(true);
   const [windowSize, setWindowSize] = useState(getWindowSize());
-  const { role } = JSON.parse(localStorage.getItem("authUser") as any);
-
   useEffect(() => {
     function handleWindowResize() {
       setWindowSize(getWindowSize());
@@ -92,7 +90,6 @@ const Protected = (props: any) => {
       />
       <div className={cx("app", menuActive ? "" : "sm-margin")}>
         <Header onMenuClick={handleMenuClick} menuActive={menuActive} />
-        {role === "USER" ? (
           <Routes>
             {menu.map((element, index) => (
               <Route
@@ -111,20 +108,7 @@ const Protected = (props: any) => {
             ))}
             {/* <Route path="/404" element={<PageNotFound />}></Route> */}
           </Routes>
-        ) : (
-          <Routes>
-            {menu.map((element, index) => (
-              <Route
-                path={`/${element.path}`}
-                element={
-                  <Suspense fallback={<></>}>{element.component}</Suspense>
-                }
-                key={String(index)}
-              />
-            ))}
-            {/* <Route path="/404" element={<PageNotFound />}></Route> */}
-          </Routes>
-        )}
+      
       </div>
     </div>
   );
