@@ -104,7 +104,10 @@ export const { resetLoginState, resetAuthUserState, logout } =
   loginSlice.actions;
 
 export const selectAuthUser = (state: RootState) => state.loginReducer.authUser;
-export const selectAccessToken = (state: RootState) =>
-  state.loginReducer.accessToken;
+export const selectAccessToken = (state: RootState) => {
+  const accessToken =
+    state.loginReducer.accessToken || localStorage.getItem("accessToken");
+  return accessToken;
+};
 
 export default loginSlice.reducer;
