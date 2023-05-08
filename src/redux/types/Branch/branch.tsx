@@ -1,4 +1,4 @@
-import { type } from "os";
+import { type } from 'os';
 
 export interface BranchState {
   listBranchs: { items: any; meta: any };
@@ -58,6 +58,8 @@ export interface EditBranchReq {
   city?: string | undefined;
   district?: string | undefined;
   ward?: string | undefined;
+  latitude?: number | undefined;
+  longitude?: number | undefined;
 }
 export interface EditBranchName {
   name: string;

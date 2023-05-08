@@ -1,16 +1,17 @@
 /* eslint-disable max-len */
-import classNames from "classnames/bind";
-import { Suspense, lazy, useEffect, useState } from "react";
-import { withCookies } from "react-cookie";
-import { Navigate, Route, Routes } from "react-router-dom";
-import styles from "./Protected.module.scss";
-import ServiceGroup from "../../pages/ServiceGroup/ServiceGroup";
-import Service from "../../pages/Service/Service";
-import Dashboard from "../../pages/Dashboard/Dashboard";
-import Booking from "../../pages/Booking/Booking";
-const Header = lazy(() => import("../Header"));
-const Sidebar = lazy(() => import("../Sidebar"));
-const Branch = lazy(() => import("../../pages/Branch"));
+import classNames from 'classnames/bind';
+import { Suspense, lazy, useEffect, useState } from 'react';
+import { withCookies } from 'react-cookie';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Booking from '../../pages/Booking/Booking';
+import Dashboard from '../../pages/Dashboard/Dashboard';
+import User from '../../pages/User';
+import Service from '../../pages/Service/Service';
+import ServiceGroup from '../../pages/ServiceGroup/ServiceGroup';
+import styles from './Protected.module.scss';
+const Header = lazy(() => import('../Header'));
+const Sidebar = lazy(() => import('../Sidebar'));
+const Branch = lazy(() => import('../../pages/Branch'));
 
 function getWindowSize() {
   const { innerWidth, innerHeight } = window;
@@ -27,10 +28,10 @@ const Protected = (props: any) => {
       setWindowSize(getWindowSize());
     }
 
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
 
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, []);
 
@@ -49,38 +50,43 @@ const Protected = (props: any) => {
 
   const menu = [
     {
-      path: "/",
+      path: '/',
       component: <Dashboard />,
       isAdmin: false,
     },
     {
-      path: "dashboard",
+      path: 'dashboard',
       component: <Dashboard />,
       isAdmin: false,
     },
     {
-      path: "branch",
+      path: 'user',
+      component: <User />,
+      isAdmin: false,
+    },
+    {
+      path: 'branch',
       component: <Branch />,
       isAdmin: false,
     },
     {
-      path: "service-group",
+      path: 'service-group',
       component: <ServiceGroup />,
       isAdmin: false,
     },
     {
-      path: "service",
+      path: 'service',
       component: <Service />,
       isAdmin: false,
     },
     {
-      path: "booking",
+      path: 'booking',
       component: <Booking />,
       isAdmin: false,
     },
   ];
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx('wrapper')}>
       {/* {menuActive && <Sidebar menuActive={menuActive} onMenuClick={handleMenuClick} />} */}
       <Sidebar
         openOnClick={openOnClick}
@@ -88,27 +94,26 @@ const Protected = (props: any) => {
         onMenuClick={handleMenuClick}
         setMenuActive={setMenuActive}
       />
-      <div className={cx("app", menuActive ? "" : "sm-margin")}>
+      <div className={cx('app', menuActive ? '' : 'sm-margin')}>
         <Header onMenuClick={handleMenuClick} menuActive={menuActive} />
-          <Routes>
-            {menu.map((element, index) => (
-              <Route
-                path={`/${element.path}`}
-                element={
-                  <Suspense fallback={<></>}>
-                    {!element.isAdmin ? (
-                      element.component
-                    ) : (
-                      <Navigate to="/employee-profile" />
-                    )}
-                  </Suspense>
-                }
-                key={String(index)}
-              />
-            ))}
-            {/* <Route path="/404" element={<PageNotFound />}></Route> */}
-          </Routes>
-      
+        <Routes>
+          {menu.map((element, index) => (
+            <Route
+              path={`/${element.path}`}
+              element={
+                <Suspense fallback={<></>}>
+                  {!element.isAdmin ? (
+                    element.component
+                  ) : (
+                    <Navigate to="/employee-profile" />
+                  )}
+                </Suspense>
+              }
+              key={String(index)}
+            />
+          ))}
+          {/* <Route path="/404" element={<PageNotFound />}></Route> */}
+        </Routes>
       </div>
     </div>
   );

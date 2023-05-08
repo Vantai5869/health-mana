@@ -1,6 +1,7 @@
 .form {
   margin-top: 30px;
 }
+
 .form-controls {
   border-color: #e3e3e3;
   box-shadow: none;
@@ -12,11 +13,13 @@
     background-color: #fff;
   }
 }
+
 .submit-section {
   margin-top: 40px;
 }
+
 .btn-submit {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   border-radius: 50px;
   font-size: 18px;
   font-weight: 600;
@@ -32,16 +35,18 @@
     outline: none;
   }
 }
+
 .dropdown-skill {
   height: 44px;
 }
+
 .error-wrapper {
   display: flex;
   align-items: center;
   margin-top: 8px;
 
   .error-message {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 15px;
@@ -51,4 +56,10 @@
     align-items: center;
     margin-top: 4px;
   }
+}
+
+.google-map {
+  height: 300px;
+  width: 100%;
+  margin-top: 30px;
 }

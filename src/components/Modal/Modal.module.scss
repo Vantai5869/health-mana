@@ -7,7 +7,7 @@
     z-index: 1050;
     left: 0;
     background: rgb(31 31 31 / 40%);
-    overflow-y:auto;
+    overflow-y: auto;
 }
 
 .modal-content {
@@ -22,7 +22,7 @@
 }
 
 .modal-title {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 22px;
     color: rgb(31, 31, 31);
     text-align: center;
@@ -49,7 +49,7 @@
     border: none;
 
     &:hover {
-        opacity: .75;
+        opacity: 0.75;
     }
 
     &:active {
@@ -63,4 +63,11 @@
 
 .modal .modal-body {
     padding: 0px 30px 30px 30px;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 700px;
+        margin: 1.75rem auto;
+    }
 }

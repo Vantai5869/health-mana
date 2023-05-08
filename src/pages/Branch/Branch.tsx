@@ -1,7 +1,7 @@
-import classNames from "classnames/bind";
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import PageSizeSelector from "../../components/PageSizeSelector";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import classNames from 'classnames/bind';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import PageSizeSelector from '../../components/PageSizeSelector';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 import {
   addBranch,
@@ -13,22 +13,22 @@ import {
   selectBranchList,
   selectStatusDeleteBranch,
   selectTotalBranch,
-} from "../../redux/slice/Branch/BranchSlice";
+} from '../../redux/slice/Branch/BranchSlice';
 import {
   EditBranchReq,
   GetBranchReq,
   BranchRes,
-} from "../../redux/types/Branch/branch";
-import ModalBranch from "./ModalBranch/ModalBranch";
-import styles from "./branch.module.scss";
+} from '../../redux/types/Branch/branch';
+import ModalBranch from './ModalBranch/ModalBranch';
+import styles from './branch.module.scss';
 
-const MainLayout = lazy(() => import("../../components/MainLayout"));
-const Table = lazy(() => import("../../components/Table"));
-const DropDownEdit = lazy(() => import("../../components/DropDownEdit/index"));
-const Modal = lazy(() => import("../../components/Modal"));
-const Loading = lazy(() => import("../../components/Loading"));
-const ModalConfirm = lazy(() => import("../../components/ModalConfirm"));
-const Pagination = lazy(() => import("../../components/Pagination"));
+const MainLayout = lazy(() => import('../../components/MainLayout'));
+const Table = lazy(() => import('../../components/Table'));
+const DropDownEdit = lazy(() => import('../../components/DropDownEdit/index'));
+const Modal = lazy(() => import('../../components/Modal'));
+const Loading = lazy(() => import('../../components/Loading'));
+const ModalConfirm = lazy(() => import('../../components/ModalConfirm'));
+const Pagination = lazy(() => import('../../components/Pagination'));
 
 interface SortType {
   sortBy: string;
@@ -38,19 +38,19 @@ interface SortType {
 export default function Branch() {
   const cx = classNames.bind(styles);
   const List = [
-    { title: "#", sortBy: "" },
-    { title: "Tên chi nhánh", sortBy: "name" },
-    { title: "Địa chỉ", sortBy: "address" },
-    { title: "Số điện thoại", sortBy: "phone" },
-    { title: "Action", sortBy: "" },
+    { title: '#', sortBy: '' },
+    { title: 'Tên chi nhánh', sortBy: 'name' },
+    { title: 'Địa chỉ', sortBy: 'address' },
+    { title: 'Số điện thoại', sortBy: 'phone' },
+    { title: 'Action', sortBy: '' },
   ];
   const dispatch = useAppDispatch();
 
   const initial = {
     page: 1,
     limit: 10,
-    sortBy: "name",
-    sortOrder: "ASC",
+    sortBy: 'name',
+    sortOrder: 'ASC',
   } as GetBranchReq;
 
   const newBranch = useRef(false);
@@ -60,11 +60,11 @@ export default function Branch() {
   const pageSizeList = [10, 25, 50, 100];
   const [limit, setLimit] = useState(pageSizeList[0]);
   const [selected, setSelected] = useState<BranchRes>({
-    id: "",
-    name: "",
-    address: "",
+    id: '',
+    name: '',
+    address: '',
   });
-  const [sort, setSort] = useState<SortType>({ sortBy: "", type: "" });
+  const [sort, setSort] = useState<SortType>({ sortBy: '', type: '' });
   const [path, setPath] = useState<GetBranchReq>(initial);
   const [page, setPage] = useState<number>(1);
 
@@ -102,14 +102,14 @@ export default function Branch() {
 
   const handleSort = (item: any) => {
     if (sort.sortBy === item.sortBy) {
-      if (sort.type === "ASC") {
-        setSort({ sortBy: item.sortBy, type: "DESC" });
+      if (sort.type === 'ASC') {
+        setSort({ sortBy: item.sortBy, type: 'DESC' });
       } else {
-        setSort({ sortBy: item.sortBy, type: "ASC" });
+        setSort({ sortBy: item.sortBy, type: 'ASC' });
       }
     } else {
-      setSort({ sortBy: item.sortBy, type: "DESC" });
-      setPath({ ...path, sortOrder: "DESC" });
+      setSort({ sortBy: item.sortBy, type: 'DESC' });
+      setPath({ ...path, sortOrder: 'DESC' });
     }
   };
 
@@ -123,13 +123,13 @@ export default function Branch() {
   }, [page]);
 
   useEffect(() => {
-    if (sort.type !== "") {
+    if (sort.type !== '') {
       setPath({ ...path, sortOrder: sort.type });
     }
   }, [sort.type]);
 
   useEffect(() => {
-    if (sort.sortBy !== "") {
+    if (sort.sortBy !== '') {
       setPath({ ...path, sortBy: sort.sortBy });
     }
   }, [sort.sortBy]);
@@ -151,8 +151,8 @@ export default function Branch() {
         titleButton="Thêm Chi Nhánh"
         handleClickAdd={handleAddBranch}
       >
-        <div className={cx("skill-page")}>
-          <div className={cx("total-page")}>
+        <div className={cx('skill-page')}>
+          <div className={cx('total-page')}>
             <div className="row">
               <PageSizeSelector
                 listPageSize={pageSizeList}
@@ -165,16 +165,12 @@ export default function Branch() {
           ) : (
             <>
               <Suspense fallback={<></>}>
-                <Table classCustom={cx("custom-table")}>
+                <Table classCustom={cx('custom-table')}>
                   <thead>
                     <tr>
                       {List.map((item, index) => {
                         return (
-                          <th
-                            key={index}
-                           
-                            onClick={() => handleSort(item)}
-                          >
+                          <th key={index} onClick={() => handleSort(item)}>
                             {item.title}
                           </th>
                         );
@@ -186,18 +182,18 @@ export default function Branch() {
                       return (
                         <tr key={e.id}>
                           <td>
-                            <p className={cx("table-stt")}>
+                            <p className={cx('table-stt')}>
                               <span>{idx + 1}</span>
                             </p>
                           </td>
                           <td>{e.name}</td>
                           <td>{e.address}</td>
                           <td>{e.phone}</td>
-                          <td className={cx("text-right", "dropdown")}>
+                          <td className={cx('text-right', 'dropdown')}>
                             <Suspense fallback={<></>}>
                               <DropDownEdit
                                 deleteCondition={true}
-                                customClass={cx("dropdown-skill")}
+                                customClass={cx('dropdown-skill')}
                                 handleEdit={() => handleEditBranch(e)}
                                 handleDelete={() => handleDelete(e)}
                               />
@@ -211,9 +207,9 @@ export default function Branch() {
               </Suspense>
             </>
           )}
-          <div className={cx("pagination")}>
-            <span className={cx("showing")}>
-              Showing {page} to {limit > totalBranch ? totalBranch : limit} of{" "}
+          <div className={cx('pagination')}>
+            <span className={cx('showing')}>
+              Showing {page} to {limit > totalBranch ? totalBranch : limit} of{' '}
               {totalBranch} entries
             </span>
             <Suspense>
@@ -229,7 +225,7 @@ export default function Branch() {
             <Modal
               isModal={show}
               title={
-                newBranch.current ? "Thêm chi nhánh" : "Chỉnh sửa chi nhánh"
+                newBranch.current ? 'Thêm chi nhánh' : 'Chỉnh sửa chi nhánh'
               }
               setOpenModals={setShow}
             >

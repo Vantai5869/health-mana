@@ -1,14 +1,9 @@
-import React, { lazy, Suspense } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import PrivateRoute from "./router/PrivateRoute/PrivateRoute";
-const Protected = lazy(() => import("./components/Protected"));
-const Login = lazy(() => import("./pages/Authen/SignIn"));
+import { lazy, Suspense } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import PrivateRoute from './router/PrivateRoute/PrivateRoute';
+const Protected = lazy(() => import('./components/Protected'));
+const Login = lazy(() => import('./pages/Authen/SignIn'));
 
 function App() {
   return (

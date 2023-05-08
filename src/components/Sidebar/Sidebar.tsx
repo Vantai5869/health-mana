@@ -1,25 +1,29 @@
-import classNames from "classnames/bind";
-import { Dispatch, lazy, SetStateAction, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import {
+  faGear,
+  faPeopleRoof,
+  faRocket,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames/bind';
+import { Dispatch, lazy, SetStateAction, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   CloseIcon,
   DashboardIcon,
   EmployeeIcon,
-  LogoutIcon,
-} from "../../assets/icons/SidebarIcons";
-import images from "../../assets/images";
-import styles from "./Sidebar.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faRocket } from "@fortawesome/free-solid-svg-icons";
+} from '../../assets/icons/SidebarIcons';
+import images from '../../assets/images';
+import styles from './Sidebar.module.scss';
 export type TSidebarProps = {
   setMenuActive: Dispatch<SetStateAction<boolean>>;
   onMenuClick: () => void;
   openOnClick: boolean;
   menuActive: boolean;
 };
-const MenuItem = lazy(() => import("./MenuItem/MenuItem"));
+const MenuItem = lazy(() => import('./MenuItem/MenuItem'));
 
 const cx = classNames.bind(styles);
+
 interface MenuItem {
   icon?: JSX.Element;
   label: string;
@@ -32,101 +36,103 @@ interface MenuItem {
 
 const menuItem: MenuItem[] = [
   {
-    icon: <DashboardIcon className={""} />,
-    label: "Dashboard",
-    to: "/dashboard",
+    icon: <DashboardIcon className={''} />,
+    label: 'Dashboard',
+    to: '/dashboard',
     id: 1,
     // isAdmin: true,
   },
   {
     icon: <EmployeeIcon />,
-    label: "Dịch vụ",
-    to: "/",
+    label: 'Dịch vụ',
+    to: '/',
     id: 2,
     children: [
       {
-        label: "Chi nhánh",
-        to: "/branch",
+        label: 'Chi nhánh',
+        to: '/branch',
         topDevider: false,
         // isAdmin: true,
       },
       {
-        label: "Nhóm dịch vụ",
-        to: "/service-group",
+        label: 'Nhóm dịch vụ',
+        to: '/service-group',
         topDevider: false,
         // isAdmin: true,
       },
       {
-        label: "Dịch vụ",
-        to: "/service",
+        label: 'Dịch vụ',
+        to: '/service',
         topDevider: false,
         // isAdmin: true,
       },
     ],
   },
   {
-    icon: <DashboardIcon className={""} />,
-    label: "Booking",
-    to: "/booking",
+    icon: <DashboardIcon className={''} />,
+    label: 'Booking',
+    to: '/booking',
     id: 1,
     // isAdmin: true,
   },
-  {
-    icon: <EmployeeIcon />,
-    label: "Profile",
-    to: "/",
-    id: 3,
-    children: [
-      {
-        label: "Profile",
-        to: "/profile",
-        topDevider: false,
-      },
-    ],
-  },
-  {
-    icon: <FontAwesomeIcon icon={faRocket} style={{ height: 24, width: 24 }} />,
-    label: "Projects",
-    to: "/",
-    id: 4,
-    isAdmin: true,
-    children: [
-      {
-        label: "Projects",
-        to: "/projects",
-        topDevider: false,
-      },
-    ],
-  },
-
   {
     icon: (
       <FontAwesomeIcon
         icon={faGear}
-        style={{ color: "#b7c0cd", width: "24px", height: "24px" }}
+        style={{ color: '#b7c0cd', width: '24px', height: '24px' }}
       />
     ),
-    label: "Setting",
-    to: "/",
+    label: 'Setting',
+    to: '/',
     id: 6,
     children: [
       {
-        label: "Change PassWord",
-        to: "/change-password",
+        label: 'Change PassWord',
+        to: '/change-password',
         topDevider: false,
       },
       {
-        label: "Languages",
-        to: "/languages",
+        label: 'Languages',
+        to: '/languages',
+        topDevider: false,
+      },
+    ],
+  },
+  {
+    icon: (
+      <FontAwesomeIcon
+        icon={faPeopleRoof}
+        style={{ color: '#b7c0cd', width: '24px', height: '24px' }}
+      />
+    ),
+    label: 'Quản lý hệ thống',
+    to: '/settings',
+    id: 6,
+    children: [
+      {
+        label: 'Nhân viên',
+        to: '/employee',
+        topDevider: false,
+      },
+      {
+        label: 'Vai trò',
+        to: '/roles',
+        topDevider: false,
+      },
+      {
+        label: 'Quản lý quyền',
+        to: '/permissions',
         topDevider: false,
       },
     ],
   },
 ];
+
 function getWindowSize() {
   const { innerWidth, innerHeight } = window;
   return { innerWidth, innerHeight };
 }
+
 export default function Sidebar({
   openOnClick,
   menuActive,
@@ -146,10 +152,10 @@ export default function Sidebar({
       setWindowSize(getWindowSize());
     }
 
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
 
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, []);
 
@@ -160,19 +166,19 @@ export default function Sidebar({
   }, [windowSize]);
 
   return (
-    <div className={cx(menuActive && "modal")} onClick={onMenuClick}>
+    <div className={cx(menuActive && 'modal')} onClick={onMenuClick}>
       <section
-        className={cx("wrapper", menuActive && "active")}
+        className={cx('wrapper', menuActive && 'active')}
         onClick={(e) => e.stopPropagation()}
         onMouseEnter={() => !openOnClick && setMenuActive(() => true)}
         onMouseLeave={() => !openOnClick && setMenuActive(() => false)}
       >
         <Link to="/">
-          <div className={cx("logo-wrapper")}>
-            <img src={images.logoSm} alt="" className={cx("logo", "logo-sm")} />
+          <div className={cx('logo-wrapper')}>
+            <img src={images.logoSm} alt="" className={cx('logo', 'logo-sm')} />
           </div>
         </Link>
-        <div className={cx("menu")}>
+        <div className={cx('menu')}>
           <MenuItem
             menuItem={menuItem}
             menuActive={menuActive}
@@ -182,8 +188,8 @@ export default function Sidebar({
           />
         </div>
         {menuActive && (
-          <div className={cx("close-icon")} onClick={onMenuClick}>
-            <CloseIcon className={""} />
+          <div className={cx('close-icon')} onClick={onMenuClick}>
+            <CloseIcon className={''} />
           </div>
         )}
       </section>

@@ -1,36 +1,27 @@
-import classNames from "classnames/bind";
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import PageSizeSelector from "../../components/PageSizeSelector";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import classNames from 'classnames/bind';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
+import Schedule from '../../components/Schedule/Schedule';
 import {
-  addBooking,
   deleteBooking,
-  editBooking,
   getBookings,
   resetStatusDeleteBooking,
-  selectLoadingBooking,
   selectBookingList,
+  selectLoadingBooking,
   selectStatusDeleteBooking,
   selectTotalBooking,
-} from "../../redux/slice/Booking/BookingSlice";
-import {
-  EditBookingReq,
-  GetBookingReq,
-  BookingRes,
-} from "../../redux/types/Booking/booking";
-import ModalBooking from "./ModalBooking/ModalBooking";
-import styles from "./Booking.module.scss";
-import { imageUpload } from "../../common/utils";
-import Schedule from "../../components/Schedule/Schedule";
+} from '../../redux/slice/Booking/BookingSlice';
+import { BookingRes, GetBookingReq } from '../../redux/types/Booking/booking';
+import styles from './Booking.module.scss';
 
-const MainLayout = lazy(() => import("../../components/MainLayout"));
-const Table = lazy(() => import("../../components/Table"));
-const DropDownEdit = lazy(() => import("../../components/DropDownEdit/index"));
-const Modal = lazy(() => import("../../components/Modal"));
-const Loading = lazy(() => import("../../components/Loading"));
-const ModalConfirm = lazy(() => import("../../components/ModalConfirm"));
-const Pagination = lazy(() => import("../../components/Pagination"));
+const MainLayout = lazy(() => import('../../components/MainLayout'));
+const Table = lazy(() => import('../../components/Table'));
+const DropDownEdit = lazy(() => import('../../components/DropDownEdit/index'));
+const Modal = lazy(() => import('../../components/Modal'));
+const Loading = lazy(() => import('../../components/Loading'));
+const ModalConfirm = lazy(() => import('../../components/ModalConfirm'));
+const Pagination = lazy(() => import('../../components/Pagination'));
 
 interface SortType {
   sortBy: string;
@@ -40,21 +31,21 @@ interface SortType {
 export default function Booking() {
   const cx = classNames.bind(styles);
   const List = [
-    { title: "#", sortBy: "" },
-    { title: "Tên nhóm dịch vụ" },
-    { title: "Ảnh dịch vụ" },
-    { title: "Mã dịch vụ" },
-    { title: "SKU" },
-    { title: "Mô tả" },
-    { title: "Action" },
+    { title: '#', sortBy: '' },
+    { title: 'Tên nhóm dịch vụ' },
+    { title: 'Ảnh dịch vụ' },
+    { title: 'Mã dịch vụ' },
+    { title: 'SKU' },
+    { title: 'Mô tả' },
+    { title: 'Action' },
   ];
   const dispatch = useAppDispatch();
 
   const initial = {
     page: 1,
     limit: 10,
-    sortBy: "name",
-    sortOrder: "ASC",
+    sortBy: 'name',
+    sortOrder: 'ASC',
   } as GetBookingReq;
 
   const newBooking = useRef(false);
@@ -64,14 +55,14 @@ export default function Booking() {
   const pageSizeList = [10, 25, 50, 100];
   const [limit, setLimit] = useState(pageSizeList[0]);
   const [selected, setSelected] = useState<BookingRes>({
-    id: "",
-    name: "",
-    code: "",
-    sku: "",
-    image: "",
-    description: "",
+    id: '',
+    name: '',
+    code: '',
+    sku: '',
+    image: '',
+    description: '',
   });
-  const [sort, setSort] = useState<SortType>({ sortBy: "", type: "" });
+  const [sort, setSort] = useState<SortType>({ sortBy: '', type: '' });
   const [path, setPath] = useState<GetBookingReq>(initial);
   const [page, setPage] = useState<number>(1);
 
@@ -117,13 +108,13 @@ export default function Booking() {
   }, [page]);
 
   useEffect(() => {
-    if (sort.type !== "") {
+    if (sort.type !== '') {
       setPath({ ...path, sortOrder: sort.type });
     }
   }, [sort.type]);
 
   useEffect(() => {
-    if (sort.sortBy !== "") {
+    if (sort.sortBy !== '') {
       setPath({ ...path, sortBy: sort.sortBy });
     }
   }, [sort.sortBy]);

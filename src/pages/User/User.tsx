@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import StatCard from '../../components/StatCard/StatCard';
-import './Dashboard.scss';
+import './User.scss';
 
 const statCard = [
   {
@@ -25,13 +25,13 @@ const statCard = [
     value: '6',
   },
 ];
-export default function Dashboard() {
+
+export default function User() {
   const renderStatCard = () => {
     return statCard.map((i) => {
       return <StatCard title={i.title} value={i.value} key={i.title} />;
     });
   };
-  // const cx = classNames.bind(styles);
 
   return (
     <Suspense fallback={<></>}>
