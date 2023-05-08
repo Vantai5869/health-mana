@@ -23,6 +23,7 @@ import ModalBooking from "./ModalBooking/ModalBooking";
 import styles from "./Booking.module.scss";
 import { imageUpload } from "../../common/utils";
 import Schedule from "../../components/Schedule/Schedule";
+import { formatDate } from "@fullcalendar/core";
 
 const MainLayout = lazy(() => import("../../components/MainLayout"));
 const Table = lazy(() => import("../../components/Table"));
@@ -40,12 +41,11 @@ interface SortType {
 export default function Booking() {
   const cx = classNames.bind(styles);
   const List = [
-    { title: "#", sortBy: "" },
-    { title: "Tên nhóm dịch vụ" },
-    { title: "Ảnh dịch vụ" },
-    { title: "Mã dịch vụ" },
-    { title: "SKU" },
-    { title: "Mô tả" },
+    { title: "#" },
+    { title: "Thời gian" },
+    { title: "Note" },
+    { title: "Ngày hẹn" },
+    { title: "Trạng thái" },
     { title: "Action" },
   ];
   const dispatch = useAppDispatch();
@@ -65,11 +65,6 @@ export default function Booking() {
   const [limit, setLimit] = useState(pageSizeList[0]);
   const [selected, setSelected] = useState<BookingRes>({
     id: "",
-    name: "",
-    code: "",
-    sku: "",
-    image: "",
-    description: "",
   });
   const [sort, setSort] = useState<SortType>({ sortBy: "", type: "" });
   const [path, setPath] = useState<GetBookingReq>(initial);
@@ -138,14 +133,109 @@ export default function Booking() {
     };
   }, [path.page, path.limit, path.sortBy, path.sortOrder, statusDelete]);
 
+  console.log({ selectBookings });
   return (
     <Suspense fallback={<></>}>
       <MainLayout
         title="Booking"
-        titleButton="Thêm Cuộc hẹn"
+        // titleButton="Thêm Cuộc hẹn"
         handleClickAdd={handleAddBooking}
       >
-        <Schedule />
+        <div className={cx("skill-page")}>
+          <div className={cx("total-page")}>
+            <div className="row">
+              <PageSizeSelector
+                listPageSize={pageSizeList}
+                onPageSizeChange={setLimit}
+              />
+            </div>
+          </div>
+          {loading ? (
+            <Loading height="500px" />
+          ) : (
+            <>
+              <Suspense fallback={<></>}>
+                <Table classCustom={cx("custom-table")}>
+                  <thead>
+                    <tr>
+                      {List.map((item, index) => {
+                        return <th key={index}>{item.title}</th>;
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectBookings?.map((e: BookingRes, idx: number) => {
+                      return (
+                        <tr key={e.id}>
+                          <td>
+                            <p className={cx("table-stt")}>
+                              <span>{idx + 1}</span>
+                            </p>
+                          </td>
+                          <td>{e.startTime + "-" + e.endTime}</td>
+                          <td>{e.note}</td>
+                          <td>{e.bookingDate}</td>
+                          <td>{e?.status=='1'? <span style={{color:'green'}}>Đã chấp nhận</span>:"Chưa chấp nhận"}</td>
+                          <td className={cx("text-right", "dropdown")}>
+                            <Suspense fallback={<></>}>
+                              <DropDownEdit
+                                deleteCondition={true}
+                                customClass={cx("dropdown-skill")}
+                                handleEdit={() => handleEditBooking(e)}
+                                handleDelete={() => handleDelete(e)}
+                              />
+                            </Suspense>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </Suspense>
+            </>
+          )}
+          <div className={cx("pagination")}>
+            <span className={cx("showing")}>
+              Showing {page} to {limit > totalBooking ? totalBooking : limit} of{" "}
+              {totalBooking} entries
+            </span>
+            <Suspense>
+              <Pagination
+                currentPage={page}
+                pageSize={limit}
+                totalData={totalBooking}
+                onChangePage={handleChangePage}
+              />
+            </Suspense>
+          </div>
+          <Suspense>
+            <Modal
+              isModal={show}
+              title={
+                newBooking.current
+                  ? "Thêm cuộc hẹn"
+                  : "Cập nhật trạng thái"
+              }
+              setOpenModals={setShow}
+            >
+              <ModalBooking
+                onCloseModal={() => setShow(false)}
+                defaultValue={newBooking.current ? null : selected}
+              />
+            </Modal>
+          </Suspense>
+          <Suspense>
+            <ModalConfirm
+              title="Xóa chi cuộc hẹn"
+              subTitle={`Bạn chắc chắn muốn xóa cuộc hẹn ? `}
+              isModal={modelConfirm}
+              confirmText="Delete"
+              cancelText="Cancel"
+              onClick={confirmDelete}
+              setOpenModals={setShowModelConfirm}
+            />
+          </Suspense>
+        </div>
       </MainLayout>
     </Suspense>
   );

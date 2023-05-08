@@ -8,6 +8,7 @@ import ServiceGroup from "../../pages/ServiceGroup/ServiceGroup";
 import Service from "../../pages/Service/Service";
 import Dashboard from "../../pages/Dashboard/Dashboard";
 import Booking from "../../pages/Booking/Booking";
+import Schedule from "../../pages/Shedule/Schedule";
 const Header = lazy(() => import("../Header"));
 const Sidebar = lazy(() => import("../Sidebar"));
 const Branch = lazy(() => import("../../pages/Branch"));
@@ -76,6 +77,11 @@ const Protected = (props: any) => {
     {
       path: "booking",
       component: <Booking />,
+      isAdmin: false,
+    },
+    {
+      path: "schedule",
+      component: <Schedule />,
       isAdmin: false,
     },
   ];

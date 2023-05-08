@@ -9,12 +9,16 @@ export interface BookingState {
 
 export interface BookingRes {
   id: string;
-  merchantId?: number;
-  sku?: string;
-  code?: string;
-  name?: string;
-  description?: string;
-  image?: string;
+  bookingDate?: number;
+  createdAt?: string;
+  endTime?: string;
+  merchantId?: string;
+  note?: string;
+  serviceId?: string;
+  startTime?: string;
+  status?: string;
+  updatedAt?: string;
+  userId?: string;
 }
 
 export interface BookingReq {
@@ -22,12 +26,12 @@ export interface BookingReq {
 }
 
 export interface AddBookingReq {
-  merchantId?: number;
-  sku?: string;
-  code?: string;
-  name?: string;
-  description?: string;
-  image?: string;
+  merchantId: number;
+  branchId: number;
+  serviceId: number;
+  bookingDate: string;
+  startTime: string;
+  note: string;
 }
 
 export interface AddBookingRes {

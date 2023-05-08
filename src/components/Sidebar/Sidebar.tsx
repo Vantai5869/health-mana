@@ -72,6 +72,13 @@ const menuItem: MenuItem[] = [
     // isAdmin: true,
   },
   {
+    icon: <DashboardIcon className={""} />,
+    label: "Schedule",
+    to: "/schedule",
+    id: 1,
+    // isAdmin: true,
+  },
+  {
     icon: <EmployeeIcon />,
     label: "Profile",
     to: "/",

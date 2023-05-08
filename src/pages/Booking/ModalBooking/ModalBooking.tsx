@@ -31,6 +31,7 @@ export default function ModalBooking({ onCloseModal, defaultValue }: any) {
     name: "",
     description: "",
     image: "",
+    status:1,
   });
   useEffect(() => {
     if (!!defaultValue) {
@@ -45,7 +46,8 @@ export default function ModalBooking({ onCloseModal, defaultValue }: any) {
 
   const handleSubmit = () => {
     if (!!defaultValue) {
-      dispatch(editBooking(form as EditBookingReq));
+      
+      dispatch(editBooking({ ...form, status: isAccept } as unknown as EditBookingReq));
     } else {
       dispatch(addBooking(form));
     }
@@ -71,62 +73,22 @@ export default function ModalBooking({ onCloseModal, defaultValue }: any) {
     setForm({ ...form, image: data.secure_url });
     setIsUploading(false)
   };
+  const [isAccept, setIsAccept] = useState(1)
+
+  const handleOptionSelect=(e:any)=>{
+    setIsAccept(+e.target.value)
+  }
+
+  console.log({isAccept})
+  console.log({defaultValue})
 
   return (
     <div className={cx("form")}>
       <div className="row">
-        <div className="col-sm-12">
-          <Input
-            required={true}
-            name={"name"}
-            label={"Tên nhóm dịch vụ"}
-            value={form.name}
-            className={className("form-group", "input-custom")}
-            type={"text"}
-            onChange={(e) => onChange(e)}
-            errorMessage={errorsMessage["name"]}
-          />
-        </div>
-        <div className="col-sm-12">
-          <Input
-            required={true}
-            name={"code"}
-            label={"Mã dịch vụ"}
-            value={form.code}
-            className={className("form-group", "input-custom")}
-            type={"text"}
-            onChange={(e) => onChange(e)}
-            errorMessage={errorsMessage["code"]}
-          />
-        </div>
-        <div className="col-sm-12">
-          <Input
-            required={true}
-            name={"sku"}
-            label={"SKU"}
-            value={form.sku}
-            className={className("form-group", "input-custom")}
-            type={"text"}
-            onChange={(e) => onChange(e)}
-            errorMessage={errorsMessage["sku"]}
-          />
-        </div>
-        <div className="col-sm-12">
-          <Input
-            required={true}
-            name={"description"}
-            label={"Mô tả"}
-            value={form.description}
-            className={className("form-group", "input-custom")}
-            type={"text"}
-            onChange={(e) => onChange(e)}
-            errorMessage={errorsMessage["description"]}
-          />
-        </div>
-        <div className="col-sm-12">
-          <div className={cx("input-label")}>Ảnh nhóm dịch vụ</div>
-          <input type="file" onChange={handleUpload} />
-        </div>
+      <select id="options-select" className={cx("selectAccept")} value={isAccept} onChange={handleOptionSelect}>
+        <option value={1}>Chấp nhận</option>
+        <option value={0}>Từ chối</option>
+      </select>
       </div>
 
       <div className={cx("submit-section")}>

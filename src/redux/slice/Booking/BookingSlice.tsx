@@ -104,14 +104,14 @@ export const bookingSlice = createSlice({
         ...state.listBookings.items,
       ];
       state.listBookings.meta.total++;
-      toast.success("Thêm chi nhánh thành công !", {
+      toast.success("Thêm cuộc hẹn thành công !", {
         position: "top-right",
       });
     });
     builder.addCase(addBooking.rejected, (state, action) => {
       state.loading = false;
       state.errors = action?.error;
-      toast.error("Thêm chi nhánh lỗi !", {
+      toast.error("Thêm cuộc hẹn lỗi !", {
         position: "top-right",
       });
     });
@@ -120,12 +120,12 @@ export const bookingSlice = createSlice({
     });
     builder.addCase(editBooking.fulfilled, (state, action) => {
       state.loading = false;
-      const booking = action?.payload.result.group;
+      const booking = action?.payload.result.booking;
       let newArr = state.listBookings.items.map((item: BookingRes) =>
         item.id === booking.id ? { ...item, ...booking } : item
       );
       state.listBookings.items = [...newArr];
-      toast.success("Cập nhật chi nhánh thành công!", {
+      toast.success("Cập nhật cuộc hẹn thành công!", {
         position: "top-right",
       });
     });
@@ -139,7 +139,7 @@ export const bookingSlice = createSlice({
     builder.addCase(deleteBooking.fulfilled, (state, action) => {
       state.loading = false;
       state.deleteStatusBooking = true;
-      toast.success("Xóa chi nhánh thành công!", {
+      toast.success("Xóa cuộc hẹn thành công!", {
         position: "top-right",
       });
       state.listBookings.meta.total--;
